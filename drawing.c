@@ -18,8 +18,8 @@ int		draw_slice(t_wall wall, int y, int line_ht,
 	int ans;
 	int slice;
 
-	ans = 64 / line_ht * (y - (WINHEIGHT - line_ht) / 2);
-	slice = 64 * wall.xslice;
+	ans = 64.0 / line_ht * (y - (WINHEIGHT - line_ht) / 2.0);
+	slice = 64.0 * wall.xslice;
 	return (txtr[wall.color - 1][TEXHEIGHT * slice + ans]);
 }
 
@@ -39,8 +39,10 @@ int		*draw_walls(int *image, t_window *win_ptr)
 		y = 0;
 		while (y < WINHEIGHT)
 		{
-			line_ht = ft_min(WINHEIGHT, (int)(WINHEIGHT / wall.dist));
-			if ((WINHEIGHT - line_ht) / 2 < y && y < (WINHEIGHT + line_ht) / 2)
+			// line_ht = ft_min(WINHEIGHT, (int)(WINHEIGHT / wall.dist));
+			line_ht = (int)(WINHEIGHT / wall.dist);
+			if ((WINHEIGHT - line_ht) / 2 < y && y < (WINHEIGHT + line_ht) / 2
+				&& 0 < y && y < WINHEIGHT)
 				image[x + y * WINWIDTH] = draw_slice(wall, y, line_ht, win_ptr->textures);
 			y++;
 		}

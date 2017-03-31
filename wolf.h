@@ -30,21 +30,19 @@
 # define CEILING 64
 # define CAM 32
 
-// #define mapWidth 24
-// #define mapHeight 24
-
 typedef	struct	s_vec
 {
 	float		x;
 	float		y;
 }				t_vec;
 
-// typedef	struct	s_map
-// {
-// 	int			***grid;
-// 	int			width;
-// 	int			height;
-// }				t_map;
+typedef	struct	s_keys
+{
+	int			w:1;
+	int			a:1;
+	int			s:1;
+	int			d:1;
+}				t_keys;
 
 typedef	struct	s_window
 {
@@ -60,6 +58,7 @@ typedef	struct	s_window
 	int			endian;
 	int			textures[5][64 * 64];
 	int			map[52][52];
+	t_keys		keys;
 }				t_window;
 
 typedef	struct	s_wall
@@ -83,5 +82,7 @@ int		movement_keys(int keycode, void *param);
 t_wall	find_wall(t_vec offset, t_window *win_ptr);
 void	generate_texture(int ans[5][TEXHEIGHT * TEXWIDTH]);
 void	load_map(int fd, int map[52][52]);
+void	set_hooks(t_window *w);
+int		movement(t_window *win_ptr);
 
 #endif

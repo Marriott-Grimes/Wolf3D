@@ -61,7 +61,9 @@ int main(int argc, char **argv)
 
 	wndow = struct_init(argc, argv);
 	draw_frame(&wndow);
-	mlx_key_hook(wndow.win, movement_keys, &wndow);
+	// mlx_key_hook(wndow.win, movement_keys, &wndow);
+	set_hooks(&wndow);
+	mlx_loop_hook(wndow.mlx, movement, &wndow);
 	mlx_loop(wndow.mlx);
 	return (0);
 }
