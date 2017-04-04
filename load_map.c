@@ -27,7 +27,7 @@ void		read_line(char *line, int map[52], char *test)
 		{
 			if (*line == '0')
 				*test = 1;
-			if (*line < '0' || *line > '4')
+			if (*line < '0' || *line > '5')
 				map[i] = 1;
 			else
 				map[i] = ft_atoi(line);
