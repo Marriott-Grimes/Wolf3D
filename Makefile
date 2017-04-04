@@ -2,7 +2,7 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror
 
-ENDFLAGS = -framework OpenGL -framework AppKit -fsanitize=address
+ENDFLAGS = -framework OpenGL -framework AppKit
 
 NAME = wolf3d
 
