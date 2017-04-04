@@ -40,8 +40,7 @@ int		*draw_walls(int *image, t_window *win_ptr)
 		while (y < WINHEIGHT)
 		{
 			line_ht = (int)(WINHEIGHT / wall.dist);
-			if ((WINHEIGHT - line_ht) / 2 < y && y < (WINHEIGHT + line_ht) / 2
-				&& 0 < y && y < WINHEIGHT)
+			if ((WINHEIGHT - line_ht) / 2 < y && y < (WINHEIGHT + line_ht) / 2)
 				image[x + y * WINWIDTH] =
 					draw_slice(wall, y, line_ht, win_ptr->textures);
 			y++;

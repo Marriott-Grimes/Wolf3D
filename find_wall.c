@@ -89,14 +89,18 @@ t_wall	find_wall(t_vec offset, t_window *win_ptr)
 	d = find_wall_part_2(d, win_ptr, p);
 	d = find_wall_loop(d, win_ptr, p);
 	if (d.wall.side == 0)
-		d.wall.dist = (d.mapsqx - win_ptr->pos.x + (d.x_inc < 0 ? 1 : 0)) / p.x;
+		d.wall.dist = (d.mapsqx - win_ptr->pos.x + (d.x_inc < 0 ? 1 : 0)) *
+						(win_ptr->cam.x + p.y / p.x * win_ptr->cam.y);
 	else
-		d.wall.dist = (d.mapsqy - win_ptr->pos.y + (d.y_inc < 0 ? 1 : 0)) / p.y;
+		d.wall.dist = (d.mapsqy - win_ptr->pos.y + (d.y_inc < 0 ? 1 : 0)) *
+						(win_ptr->cam.y + p.x / p.y * win_ptr->cam.x);
 	d.wall.color = win_ptr->map[d.mapsqy][d.mapsqx];
 	if (!d.wall.side)
-		d.wall.xslice = win_ptr->pos.y + d.wall.dist * p.y;
+		d.wall.xslice = win_ptr->pos.y +
+		(d.mapsqx - win_ptr->pos.x + (d.x_inc < 0 ? 1 : 0)) / p.x * p.y;
 	else
-		d.wall.xslice = win_ptr->pos.x + d.wall.dist * p.x;
+		d.wall.xslice = win_ptr->pos.x +
+		(d.mapsqy - win_ptr->pos.y + (d.y_inc < 0 ? 1 : 0)) / p.y * p.x;
 	d.wall.xslice -= (int)d.wall.xslice;
 	return (d.wall);
 }
