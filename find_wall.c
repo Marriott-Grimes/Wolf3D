@@ -17,76 +17,86 @@ float	ft_absff(float n)
 	return (n > 0 ? n : -n);
 }
 
-t_wall	find_wall(t_vec offset, t_window *win_ptr)
+t_blah	set_loop_vars(t_window *win_ptr)
 {
-	t_vec	p;
-	int		mapsqx;
-	int		mapsqy;
-	float	boxdistx;
-	float	boxdisty;
-	int		x_inc;
-	int		y_inc;
-	int		hit;
-	int		side;
-	float	perpdist;
-	t_wall	ans;
+	t_blah d;
 
-	p = normalize(vec_add(win_ptr->cam, offset));
-	mapsqx = (int)win_ptr->pos.x;
-	mapsqy = (int)win_ptr->pos.y;
-	boxdistx = 0;
-	boxdisty = 0;
-	hit = 0;
+	d.mapsqx = (int)win_ptr->pos.x;
+	d.mapsqy = (int)win_ptr->pos.y;
+	d.boxdistx = 0.0;
+	d.boxdisty = 0.0;
+	d.x_inc = 1;
+	d.y_inc = 1;
+	return (d);
+}
+
+t_blah	find_wall_part_2(t_blah d, t_window *win_ptr, t_vec p)
+{
 	if (p.x < 0)
 	{
-		x_inc = -1;
-		boxdistx = (mapsqx - win_ptr->pos.x) / p.x;
+		d.x_inc = -1;
+		d.boxdistx = (d.mapsqx - win_ptr->pos.x) / p.x;
 	}
 	else if (p.x > 0)
 	{
-		x_inc = 1;
-		boxdistx = (1.0 - win_ptr->pos.x + mapsqx) / p.x;
+		d.x_inc = 1;
+		d.boxdistx = (1.0 - win_ptr->pos.x + d.mapsqx) / p.x;
 	}
 	if (p.y < 0)
 	{
-		y_inc = -1;
-		boxdisty = (mapsqy - win_ptr->pos.y) / p.y;
+		d.y_inc = -1;
+		d.boxdisty = (d.mapsqy - win_ptr->pos.y) / p.y;
 	}
 	else if (p.y > 0)
 	{
-		y_inc = 1;
-		boxdisty = (1.0 - win_ptr->pos.y + mapsqy) / p.y;
+		d.y_inc = 1;
+		d.boxdisty = (1.0 - win_ptr->pos.y + d.mapsqy) / p.y;
 	}
+	return (d);
+}
+
+t_blah	find_wall_loop(t_blah d, t_window *win_ptr, t_vec p)
+{
 	while (1)
 	{
-		if (boxdistx < boxdisty || p.y == 0.0)
+		if (d.boxdistx < d.boxdisty || p.y == 0.0)
 		{
-			mapsqx += x_inc;
-			side = 0;
+			d.mapsqx += d.x_inc;
+			d.wall.side = 0;
 		}
 		else
 		{
-			mapsqy += y_inc;
-			side = 1;
+			d.mapsqy += d.y_inc;
+			d.wall.side = 1;
 		}
-		if (win_ptr->map[mapsqy][mapsqx])
+		if (win_ptr->map[d.mapsqy][d.mapsqx])
 			break ;
-		if (side == 0)
-			boxdistx += 1.0 / ft_absff(p.x);
+		if (d.wall.side == 0)
+			d.boxdistx += 1.0 / ft_absff(p.x);
 		else
-			boxdisty += 1.0 / ft_absff(p.y);
+			d.boxdisty += 1.0 / ft_absff(p.y);
 	}
-	if (side == 0)
-		perpdist = (mapsqx - win_ptr->pos.x + (x_inc < 0 ? 1 : 0)) / p.x;
+	return (d);
+}
+
+t_wall	find_wall(t_vec offset, t_window *win_ptr)
+{
+	t_vec	p;
+	t_blah	d;
+
+	p = normalize(vec_add(win_ptr->cam, offset));
+	d = set_loop_vars(win_ptr);
+	d = find_wall_part_2(d, win_ptr, p);
+	d = find_wall_loop(d, win_ptr, p);
+	if (d.wall.side == 0)
+		d.wall.dist = (d.mapsqx - win_ptr->pos.x + (d.x_inc < 0 ? 1 : 0)) / p.x;
 	else
-		perpdist = (mapsqy - win_ptr->pos.y + (y_inc < 0 ? 1 : 0)) / p.y;
-	ans.dist = perpdist;
-	ans.color = win_ptr->map[mapsqy][mapsqx];
-	ans.side = side;
-	if (!side)
-		ans.xslice = win_ptr->pos.y + perpdist * p.y;
+		d.wall.dist = (d.mapsqy - win_ptr->pos.y + (d.y_inc < 0 ? 1 : 0)) / p.y;
+	d.wall.color = win_ptr->map[d.mapsqy][d.mapsqx];
+	if (!d.wall.side)
+		d.wall.xslice = win_ptr->pos.y + d.wall.dist * p.y;
 	else
-		ans.xslice = win_ptr->pos.x + perpdist * p.x;
-	ans.xslice -= (int)ans.xslice;
-	return (ans);
+		d.wall.xslice = win_ptr->pos.x + d.wall.dist * p.x;
+	d.wall.xslice -= (int)d.wall.xslice;
+	return (d.wall);
 }

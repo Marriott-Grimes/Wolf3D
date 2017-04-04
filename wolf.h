@@ -69,20 +69,31 @@ typedef	struct	s_wall
 	char		side;
 }				t_wall;
 
-t_vec	rotate(float a, t_vec v);
-t_vec	vec_add(t_vec a, t_vec b);
-t_vec	sc_mult(float a, t_vec v);
-t_vec	normalize(t_vec v);
-float	get_dist(t_vec a, t_vec b);
-int		*draw_walls(int *image, t_window *win_ptr);
-void	draw_frame(t_window *win_ptr);
-int		choose_color(char n, char side);
-int		collision(t_vec pos, int map[52][52]);
-int		movement_keys(int keycode, void *param);
-t_wall	find_wall(t_vec offset, t_window *win_ptr);
-void	generate_texture(int ans[5][TEXHEIGHT * TEXWIDTH]);
-void	load_map(int fd, int map[52][52]);
-void	set_hooks(t_window *w);
-int		movement(t_window *win_ptr);
+typedef	struct	s_blah
+{
+	int			mapsqx;
+	int			mapsqy;
+	float		boxdistx;
+	float		boxdisty;
+	int			x_inc;
+	int			y_inc;
+	t_wall		wall;
+}				t_blah;
+
+t_vec			rotate(float a, t_vec v);
+t_vec			vec_add(t_vec a, t_vec b);
+t_vec			sc_mult(float a, t_vec v);
+t_vec			normalize(t_vec v);
+float			get_dist(t_vec a, t_vec b);
+int				*draw_walls(int *image, t_window *win_ptr);
+void			draw_frame(t_window *win_ptr);
+int				choose_color(char n, char side);
+int				collision(t_vec pos, int map[52][52]);
+int				movement_keys(int keycode, void *param);
+t_wall			find_wall(t_vec offset, t_window *win_ptr);
+void			generate_texture(int ans[5][TEXHEIGHT * TEXWIDTH]);
+void			load_map(int fd, int map[52][52]);
+void			set_hooks(t_window *w);
+int				movement(t_window *win_ptr);
 
 #endif

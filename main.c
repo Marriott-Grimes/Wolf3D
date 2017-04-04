@@ -12,7 +12,7 @@
 
 #include "wolf.h"
 
-t_vec find_start_pos(int map[52][52])
+t_vec		find_start_pos(int map[52][52])
 {
 	t_vec p;
 
@@ -33,7 +33,7 @@ t_vec find_start_pos(int map[52][52])
 
 t_window	struct_init(int argc, char **argv)
 {
-	int fd;
+	int			fd;
 	t_window	wndow;
 
 	wndow.mlx = mlx_init();
@@ -55,13 +55,12 @@ t_window	struct_init(int argc, char **argv)
 	return (wndow);
 }
 
-int main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
 	t_window	wndow;
 
 	wndow = struct_init(argc, argv);
 	draw_frame(&wndow);
-	// mlx_key_hook(wndow.win, movement_keys, &wndow);
 	set_hooks(&wndow);
 	mlx_loop_hook(wndow.mlx, movement, &wndow);
 	mlx_loop(wndow.mlx);

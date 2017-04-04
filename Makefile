@@ -7,7 +7,7 @@ ENDFLAGS = -framework OpenGL -framework AppKit -fsanitize=address
 NAME = wolf3d
 
 SRCS = main.c util.c hook_stuff.c drawing.c find_wall.c textures.c \
-	load_map.c
+	load_map.c movement.c
 
 OBJ = $(SRCS:.c=.o)
 

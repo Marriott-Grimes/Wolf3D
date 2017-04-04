@@ -1,35 +1,5 @@
 #include "wolf.h"
 
-int		collision(t_vec pos, int map[52][52])
-{
-	return (map[(int)pos.y][(int)pos.x] ? 1 : 0);
-}
-
-int		movement(t_window *win_ptr)
-{
-	t_vec		temp;
-
-	if (win_ptr->keys.w)
-	{
-		temp = vec_add(win_ptr->pos, sc_mult(0.05, win_ptr->cam));
-		if (!collision(temp, win_ptr->map))
-			win_ptr->pos = temp;
-	}
-	if (win_ptr->keys.s)
-	{
-		temp = vec_add(win_ptr->pos, sc_mult(-0.05, win_ptr->cam));
-		if (!collision(temp, win_ptr->map))
-			win_ptr->pos = temp;
-	}
-	if (win_ptr->keys.a)
-		win_ptr->cam = rotate(PI / 50.0, win_ptr->cam);
-	if (win_ptr->keys.d)
-		win_ptr->cam = rotate(-PI / 50.0, win_ptr->cam);
-	draw_frame(win_ptr);
-	return (0);
-}
-
-
 int		key_press_hook(int key, void *param)
 {
 	t_window *win_ptr;
@@ -79,4 +49,3 @@ void	set_hooks(t_window *w)
 	mlx_hook(w->win, 3, 0, key_release_hook, w);
 	mlx_hook(w->win, 17, 0, exit_hook, w);
 }
-

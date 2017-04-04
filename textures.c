@@ -18,7 +18,8 @@ void	generate_texture(int ans[5][TEXHEIGHT * TEXWIDTH])
 			ans[0][TEXHEIGHT * x + y] = 256 * xor;
 			ans[1][TEXHEIGHT * x + y] = xor + 256 * xor + 65536 * xor;
 			ans[2][TEXHEIGHT * x + y] = 65536 * 192 * (x % 16 && y % 16);
-			ans[3][TEXHEIGHT * x + y] = 65536 * 254 * (x != y && x != TEXWIDTH - y);
+			ans[3][TEXHEIGHT * x + y] =
+				65536 * 254 * (x != y && x != TEXWIDTH - y);
 			ans[4][TEXHEIGHT * x + y] = 256 * xycolor + 65536 * xycolor;
 			x++;
 		}
